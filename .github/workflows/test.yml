@@ -3,15 +3,12 @@ on: [push]
 jobs:
   setup_terraform:
     runs-on: ubuntu-latest
-    env:
-      TF_CLI_CONFIG_FILE: .terraformrc
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
+      - run: echo $RUNNER_TEMP
+      - uses: brandonc/setup-terraform@brandonc/tmp_cli_config
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - run: terraform init
       - run: terraform plan -no-color
-      - name: stat .terraformrc
-        run: stat .terraformrc
